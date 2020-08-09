@@ -32,12 +32,16 @@ export const NuevoProyecto = () => {
   };
 
   const handleClick = () => {
-    mostrarFormulario()
-  }
+    mostrarFormulario();
+  };
 
   return (
     <Fragment>
-      <button type="button" className="btn btn-primario btn-block" onClick={ handleClick} >
+      <button
+        type="button"
+        className="btn btn-primario btn-block"
+        onClick={handleClick}
+      >
         Nuevo Proyecto
       </button>
 

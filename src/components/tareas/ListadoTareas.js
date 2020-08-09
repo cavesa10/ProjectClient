@@ -1,15 +1,11 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useContext} from 'react'
 
 import {Tarea} from './Tarea'
+import {proyectoContext} from '../../context/proyectos/proyectoContext'
 
 export const ListadoTareas = () => {
 
-  const tareasProyecto = [
-    {nombre: 'Elegir Plataforma', estado: true},
-    {nombre: 'Elegir Colores', estado: true},
-    {nombre: 'Elegir Hosting', estado: false},
-    {nombre: 'Elegir Pasarela de pago', estado: true}
-  ]
+  const {tareasProyecto} = useContext(proyectoContext)
   
   return (
     <Fragment>
@@ -18,7 +14,7 @@ export const ListadoTareas = () => {
         {tareasProyecto.length === 0
           ? ( <li className="tarea" ><p>No hay tareas</p></li> )
           : tareasProyecto.map(tarea => (
-            <Tarea tarea={tarea} />
+            <Tarea key={tarea.id} tarea={tarea} />
           ))
         }
         
