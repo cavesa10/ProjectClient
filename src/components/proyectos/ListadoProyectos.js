@@ -13,7 +13,7 @@ export const ListadoProyectos = () => {
   },[])
   
   // validación si hay proyectos
-  if(proyectos.length === 0) {return null}
+  if(proyectos.length === 0) {return <p>No hay proyecto, comienza agregando un nuevo proyecto</p>}
   
   return (
     <ul className="listado-proyectos" >

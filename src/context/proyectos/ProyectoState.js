@@ -7,10 +7,13 @@ import {
   FORMULARIO_PROYECTO,
   OBTENER_PROYECTOS,
   AGREGAR_PROYECTOS,
+  VALIDAR_FORMULARIO,
+  PROYECTO_ACTUAL,
+  ELIMINAR_PROYECYO
 } from "../../types";
 
 export const ProyectoState = (props) => {
-  const proyectos11 = [
+  const proyectos = [
     { id: 1, nombre: "Tienda Vitual" },
     { id: 2, nombre: "Intranet" },
     { id: 3, nombre: "Diseño web" },
@@ -25,6 +28,8 @@ export const ProyectoState = (props) => {
     ],
     proyectos: [],
     formulario: false,
+    errorFormulario: false,
+    proyecto: null
   };
 
   // dispatch para ejecutar las acciones
@@ -40,10 +45,10 @@ export const ProyectoState = (props) => {
 
   // obtener los proyectos
 
-  const obtenerProyectos = (proyecto) => {
+  const obtenerProyectos = () => {
     dispatch({
       type: OBTENER_PROYECTOS,
-      payload: proyectos11,
+      payload: proyectos,
     });
   };
 
@@ -54,19 +59,46 @@ export const ProyectoState = (props) => {
     // insertar el proyecto al state
     dispatch({
       type: AGREGAR_PROYECTOS,
-      playload: proyecto
+      payload: proyecto
     })
 
   };
+
+  // MOSTAR SI HAY ERROR AL AÑADIR UNA NUEVO PROYECTO 
+
+  const mostrarError = () => {
+    dispatch({
+      type: VALIDAR_FORMULARIO
+    })
+  }
+  // selecciona el proyecto que el usuario dio click
+  const proyectoActual = proyectoId => {
+    dispatch({
+      type: PROYECTO_ACTUAL,
+      payload: proyectoId
+    })
+  }
+  const eliminarProyecto = (proyectoId) => {
+    dispatch({
+      type: ELIMINAR_PROYECYO,
+      payload: proyectoId
+    })
+  }
+
   return (
     <proyectoContext.Provider
       value={{
         proyectos: state.proyectos,
         tareasProyecto: state.tareasProyecto,
         formulario: state.formulario,
+        errorFormulario: state.errorFormulario,
+        proyecto: state.proyecto,
         mostrarFormulario,
         obtenerProyectos,
-        agregarProyecto
+        agregarProyecto,
+        mostrarError,
+        proyectoActual,
+        eliminarProyecto
       }}
     >
       {props.children}
