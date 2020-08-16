@@ -20,12 +20,6 @@ export const ProyectoState = (props) => {
     { id: 4, nombre: "MERN" },
   ];
   const initialState = {
-    tareasProyecto: [
-      { id: 1, nombre: "Elegir Plataforma", estado: true },
-      { id: 2, nombre: "Elegir Colores", estado: true },
-      { id: 3, nombre: "Elegir Hosting", estado: false },
-      { id: 4, nombre: "Elegir Pasarela de pago", estado: true },
-    ],
     proyectos: [],
     formulario: false,
     errorFormulario: false,
@@ -89,7 +83,6 @@ export const ProyectoState = (props) => {
     <proyectoContext.Provider
       value={{
         proyectos: state.proyectos,
-        tareasProyecto: state.tareasProyecto,
         formulario: state.formulario,
         errorFormulario: state.errorFormulario,
         proyecto: state.proyecto,
