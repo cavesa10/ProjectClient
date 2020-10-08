@@ -1,7 +1,12 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Link} from 'react-router-dom'
+import {alertaContext} from '../../context/alertas/alertaContex'
+import alertaReducer from "../../context/alertas/alertaReducer";
 
 export const NuevaCuenta = () => {
+
+  const AlertaContex = useContext(alertaContext)
+  const {alerta, mostrarAlerta} = AlertaContex
 
   const [loginValidacion, setLoginValidacion] = useState({
     nombre: '',
@@ -25,10 +30,23 @@ export const NuevaCuenta = () => {
     e.preventDefault()
 
     // Validación que no haya campos vacios
+    if(nombre.trim() === '' || email.trim() === ''|| password.trim() === ''|| confirmar.trim() === ''){
+      mostrarAlerta('Todos los campos son obligatorio', 'alerta-error')
+      return
+      
+    }
 
     // password minimo de 6 caracteres
+    if (password.length < 6) {
+      mostrarAlerta('El password debe ser de al menos de 6 caracteres','alerta-error')
+      return
+    }
 
     // los dos pass sean iguales
+    if(password !== confirmar){
+      mostrarAlerta('Los password son diferentes','alerta-error')
+      return     
+    }
 
     // Pasarlos al action
   }
@@ -36,6 +54,7 @@ export const NuevaCuenta = () => {
   return (
     <div>
       <div className="form-usuario">
+        {alerta ? ( <div className={`alerta ${alerta.categoria}`}>{alerta.msg}</div>  ) : null}
         <div className="contenedor-form sombra-dark">
           <h1>Crear Cuenta</h1>
           <form onSubmit={handleOnSubmit}>
