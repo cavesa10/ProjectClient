@@ -4,13 +4,17 @@ import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import { Tarea } from "./Tarea";
 import { proyectoContext } from "../../context/proyectos/proyectoContext";
 import { TareaContext } from "../../context/tareas/tareaContext";
+import {alertaContext} from '../../context/alertas/alertaContex'
 
 export const ListadoTareas = () => {
-  const { proyecto, eliminarProyecto } = useContext(proyectoContext);
+  const { mensaje, proyecto, eliminarProyecto } = useContext(proyectoContext);
 
   const { obtenerTareas, tareasproyecto } = useContext(TareaContext);
-
+  const {alerta, mostrarAlerta} = useContext(alertaContext)
   useEffect(() => {
+    if(mensaje){
+      mostrarAlerta(mensaje.msg, mensaje.categoria)
+    }
     obtenerTareas();
     // eslint-disable-next-line
   }, []);
@@ -24,7 +28,7 @@ export const ListadoTareas = () => {
   // extraer el proyecto actual
 
   const handleClick = () => {
-    eliminarProyecto(proyectoActual.id);
+    eliminarProyecto(proyectoActual._id);
   };
 
   return (

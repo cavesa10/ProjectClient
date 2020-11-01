@@ -60,6 +60,7 @@ a {
   border-radius: .5rem;
   border: none;
   transition: background-color .3s ease;
+  text-transform: capitalize;
   
 }
 .btn:hover {
@@ -87,6 +88,10 @@ a {
   padding: 0;
   display: block;
   background-color: transparent;
+}
+
+.cerrar-sesion{
+  color: var(--blanco)
 }
 
 @media (min-width: 768px) {

@@ -1,3 +1,3 @@
 import {createContext} from 'react'
 
-export const authContexT = createContext()
+export const authContext = createContext()
