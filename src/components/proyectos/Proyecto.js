@@ -7,12 +7,12 @@ export const Proyecto = ({proyecto}) => {
   const proyectosContext = useContext (proyectoContext)
   const { proyectoActual } = proyectosContext
 
-  const {selectTareas} = useContext(TareaContext)
+  const {obtenerTareas} = useContext(TareaContext)
 
   // funcion para agregar el proyecto actual
   const seleccionarProyecto = (id) => {
     proyectoActual(id) //filtrar un proyecto actual
-    selectTareas(id) // filtrar las tareas del proyecto seleccionado
+    obtenerTareas(id) // filtrar las tareas del proyecto seleccionado
   }
   return (
     <li>

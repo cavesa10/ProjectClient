@@ -17,8 +17,8 @@ export const NuevaCuenta = (props) => {
     if(mensaje){
       mostrarAlerta(mensaje.msg, mensaje.categoria)
     }
-  
-  }, [mensaje, autenticado, props.history,mostrarAlerta])
+      // eslint-disable-next-line
+  }, [mensaje, autenticado, props.history,])
 
   const [loginValidacion, setLoginValidacion] = useState({
     nombre: '',

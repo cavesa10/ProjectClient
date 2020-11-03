@@ -21,7 +21,8 @@ export const Login = (props) => {
     if(mensaje){
       mostrarAlerta(mensaje.msg, mensaje.categoria)
     }
-  }, [mensaje, props.history, autenticado, mostrarAlerta])
+    // eslint-disable-next-line
+  }, [mensaje, autenticado])
   const { email, password } = loginValidacion;
 
   const handleOnChange = (e) => {

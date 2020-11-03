@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { authContext } from "../../context/autenticacion/authContext";
+import { TareaContext } from "../../context/tareas/tareaContext";
+import { proyectoContext } from "../../context/proyectos/proyectoContext";
 
 export const Barra = () => {
   const { usuario, usuarioAutenticado, cerrarSesion } = useContext(authContext);
@@ -7,7 +9,14 @@ export const Barra = () => {
     usuarioAutenticado();
     // eslint-disable-next-line
   }, []);
-
+  const {limpiarState} = useContext(TareaContext)
+  const {limpiarProyecto} = useContext(proyectoContext)
+  const onClick = () => {
+    limpiarState()
+    limpiarProyecto()
+    cerrarSesion()
+  
+  }
 
   return (
     <header className="app-header">
@@ -19,7 +28,7 @@ export const Barra = () => {
       <nav className="nav-principal">
         <button
           className="btn btn-blank cerrar-sesion"
-          onClick={() => cerrarSesion()}
+          onClick={()=>onClick()}
         >
           Cerrar Sesión
         </button>

@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react'
+import React, {useReducer, useContext} from 'react'
 import {authContext} from './authContext'
 import authReducer from './authReducer'
 
@@ -22,6 +22,7 @@ export const AuthState = (props) => {
     cargando: true
   }
   const [state, dispatch] = useReducer(authReducer, initialState)
+  
 
   const registrarUsuario = async datos => {
     try {
@@ -50,18 +51,18 @@ export const AuthState = (props) => {
   const usuarioAutenticado = async () => {
     const token = localStorage.getItem('token')
     if(token){
-      // Todo: fucnion para enviera el token por headers
+      // Todo: funcion para enviera el token por headers
       tokenAuth(token);
     }
     try {
       const respuesta = await clienteAxios.get('/api/auth')
-      // console.log(respuesta)
+      console.log(respuesta.data.usuario)
       dispatch({
         type: OBTENER_USUARIO,
         payload: respuesta.data.usuario
       })
     } catch (error) {
-      console.log(error.response)
+      // console.log(error.response)
       dispatch({
         type: LOGIN_ERROR,
       })
@@ -76,8 +77,9 @@ export const AuthState = (props) => {
          type: LOGIN_EXITOSO,
          payload: respuesta.data
        })
+      //  Obtener el usuario
+       usuarioAutenticado()
      } catch (error) {
-       console.log(error.response.data.msg)
       const alerta = {
         msg: error.response.data.msg,
         categoria: 'alerta-error'
@@ -87,7 +89,6 @@ export const AuthState = (props) => {
         payload: alerta
       })
      }
-     usuarioAutenticado()
    }
   //  Cerrar Sesión
   const cerrarSesion = () => {

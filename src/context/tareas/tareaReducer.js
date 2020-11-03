@@ -1,21 +1,16 @@
 import {
   AGREGAR_TAREA,
-  OBTENER_TAREA,
+  LIMPIAR_TAREA,
   TAREA_PROYECTO,
   VALIDAR_TASK,
   ELIMINAR_TAREA,
-  ESTADO_TAREA,
   TAREA_ACTUAL,
-  ACTUALIZA_TAREA
+  ACTUALIZA_TAREA,
+  LIMPIAR_STATE
 } from "../../types";
 
 export default (state, action) => {
   switch (action.type) {
-    case OBTENER_TAREA:
-      return {
-        ...state,
-        tareas: action.payload,
-      };
     case VALIDAR_TASK:
       return {
         ...state,
@@ -24,30 +19,23 @@ export default (state, action) => {
     case AGREGAR_TAREA:
       return {
         ...state,
-        tareas: [action.payload, ...state.tareas],
+        tareasproyecto: [...state.tareasproyecto, action.payload],
         errorFormulario: false,
       };
 
     case TAREA_PROYECTO:
       return {
         ...state,
-        tareasproyecto: state.tareas.filter(
-          (tarea) => tarea.pryectoId === action.payload
-        ),
+        tareasproyecto: action.payload
       };
 
     case ELIMINAR_TAREA:
       return {
         ...state,
-        tareas: state.tareas.filter(
-          (tarea) => tarea.id !== action.payload
+        tareasproyecto: state.tareasproyecto.filter(
+          (tarea) => tarea._id !== action.payload
         ),
       };
-    case ESTADO_TAREA:
-      return {
-        ...state,
-        tareas: state.tareas.map(tarea => tarea.id === action.payload ? action.payload : tarea)
-      }
     case TAREA_ACTUAL:
       return {
         ...state,
@@ -56,8 +44,18 @@ export default (state, action) => {
     case ACTUALIZA_TAREA:
       return {
         ...state,
-        tareas: state.tareas.map(tarea => tarea.id === action.payload.id ? action.payload : tarea),
+        tareasproyecto: state.tareasproyecto.map(tarea => tarea._id === action.payload._id ? action.payload : tarea),
         tareaSeleccionada: null
+      }
+    case LIMPIAR_TAREA:
+      return {
+          ...state,
+          tareaseleccionada: null
+      }
+    case LIMPIAR_STATE:
+      return {
+          ...state,
+          tareasproyecto: []
       }
 
     default:

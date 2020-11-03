@@ -9,7 +9,8 @@ import {
   PROYECTO_ERROR,
   VALIDAR_FORMULARIO,
   PROYECTO_ACTUAL,
-  ELIMINAR_PROYECYO
+  ELIMINAR_PROYECYO,
+  LIMPIAR_PROYECTOS
 } from "../../types";
 
 import {clienteAxios} from '../../config/axios'
@@ -40,7 +41,6 @@ export const ProyectoState = (props) => {
   const obtenerProyectos = async () => {
     try {
       const  resultado = await clienteAxios.get('/api/proyectos')
-      
       dispatch({
         type: OBTENER_PROYECTOS,
         payload: resultado.data.proyectos
@@ -48,7 +48,7 @@ export const ProyectoState = (props) => {
       
     } catch (error) {
       const alerta = {
-        msg: 'Hubo un error',
+        msg: 'Hubo un errors',
         categoria: 'alerta-error'
       }
       dispatch({
@@ -112,6 +112,12 @@ export const ProyectoState = (props) => {
       })
     }
   }
+  const limpiarProyecto = () => {
+    dispatch({
+      type: LIMPIAR_PROYECTOS
+    })
+
+  }
 
   return (
     <proyectoContext.Provider
@@ -126,7 +132,8 @@ export const ProyectoState = (props) => {
         agregarProyecto,
         mostrarError,
         proyectoActual,
-        eliminarProyecto
+        eliminarProyecto,
+        limpiarProyecto
       }}
     >
       {props.children}

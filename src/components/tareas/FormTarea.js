@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import { proyectoContext } from "../../context/proyectos/proyectoContext";
 import { TareaContext } from "../../context/tareas/tareaContext";
@@ -11,8 +10,9 @@ export const FormTarea = () => {
     errorFormulario,
     mostrarError,
     agregarTarea,
-    selectTareas,
+    obtenerTareas,
     actualizarTarea,
+    limpiarTarea
   } = useContext(TareaContext);
 
   // Effec que detecta si hay una tarea seleccionada
@@ -53,18 +53,16 @@ export const FormTarea = () => {
     // SI es edicion o si es nueva Tarea
     if (tareaSeleccionada === null) {
       // añadomos al state local
-      task.pryectoId = proyectoActual.id;
-      task.estado = false;
-      task.id = uuidv4();
-
+      task.proyecto = proyectoActual._id;
       // añadimos al state global
       agregarTarea(task);
     } else {
       actualizarTarea(task);
+      limpiarTarea()
     }
 
     // filtramos las tareas del proyecto recien agregado
-    selectTareas(proyectoActual.id);
+    obtenerTareas(proyectoActual.id);
 
     // seteamos el valor
 

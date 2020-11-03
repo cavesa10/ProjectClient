@@ -26,7 +26,7 @@ export const AlertaState = props => {
       dispatch({
         type: OCULTAR_ALERTA
       })
-    }, 5000)
+    }, 1000)
   }
 
 

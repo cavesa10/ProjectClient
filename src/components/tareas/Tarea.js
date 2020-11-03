@@ -1,15 +1,18 @@
 import React, { useContext } from "react";
 
 import { TareaContext } from "../../context/tareas/tareaContext";
+import {proyectoContext} from '../../context/proyectos/proyectoContext';
 
 export const Tarea = ({ tarea }) => {
-  const { eliminarTarea, selectTareas, cambiarEstadoTarea, guardarTareaActual } = useContext(
+  const { eliminarTarea, obtenerTareas, actualizarTarea, guardarTareaActual } = useContext(
     TareaContext
   );
+  const {proyecto} = useContext(proyectoContext);
+  const [proyectoActual] = proyecto
 
-  const handleClickEliminar = () => {
-    eliminarTarea(tarea.id);
-    selectTareas(tarea.pryectoId);
+  const handleClickEliminar = _id => {
+    eliminarTarea(_id, proyectoActual._id);
+    obtenerTareas(proyectoActual._id)
   };
 
   const handleClickEstado = () => {
@@ -19,7 +22,7 @@ export const Tarea = ({ tarea }) => {
     }else{
       tarea.estado = true
     }
-    cambiarEstadoTarea(tarea)
+    actualizarTarea(tarea)
   };
 
   const handleClickEditar = () => {
@@ -55,7 +58,7 @@ export const Tarea = ({ tarea }) => {
           Editar
         </button>
         <button
-          onClick={handleClickEliminar}
+          onClick={() => handleClickEliminar(tarea._id)}
           type="button"
           className="btn btn-secundario"
         >

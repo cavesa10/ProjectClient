@@ -2,41 +2,23 @@ import React, { useReducer } from "react";
 
 import { TareaContext } from "./tareaContext";
 import TareaReducer from "./tareaReducer";
+import {clienteAxios} from '../../config/axios'
 
 import {
   AGREGAR_TAREA,
-  OBTENER_TAREA,
   TAREA_PROYECTO,
   VALIDAR_TASK,
+  LIMPIAR_TAREA,
   ELIMINAR_TAREA,
-  ESTADO_TAREA,
   TAREA_ACTUAL,
-  ACTUALIZA_TAREA
+  ACTUALIZA_TAREA,
+  LIMPIAR_STATE
 } from "../../types";
 
-const tareasProyecto = [
-  { id: 1, pryectoId: 1, nombre: "Elegir Plataforma1", estado: true },
-  { id: 2, pryectoId: 2, nombre: "Elegir Colores2", estado: true },
-  { id: 3, pryectoId: 3, nombre: "Elegir Hosting3", estado: false },
-  { id: 4, pryectoId: 4, nombre: "Elegir Pasarela de pago4", estado: true },
-  { id: 5, pryectoId: 1, nombre: "Elegir Plataforma1", estado: true },
-  { id: 6, pryectoId: 1, nombre: "Elegir Colores1", estado: true },
-  { id: 7, pryectoId: 2, nombre: "Elegir Hosting2", estado: false },
-  { id: 8, pryectoId: 1, nombre: "Elegir Pasarela de pago1", estado: true },
-  { id: 9, pryectoId: 1, nombre: "Elegir Plataforma1", estado: true },
-  { id: 10, pryectoId: 3, nombre: "Elegir Colores3", estado: true },
-  { id: 11, pryectoId: 2, nombre: "Elegir Hosting2", estado: false },
-  { id: 12, pryectoId: 4, nombre: "Elegir Pasarela de pago4", estado: true },
-  { id: 13, pryectoId: 2, nombre: "Elegir Plataforma2", estado: true },
-  { id: 14, pryectoId: 2, nombre: "Elegir Colores2", estado: true },
-  { id: 15, pryectoId: 4, nombre: "Elegir Hosting4", estado: false },
-  { id: 16, pryectoId: 3, nombre: "Elegir Pasarela de pago3", estado: true },
-];
 
 export const TareaState = (props) => {
   const initialState = {
-    tareas: [],
-    tareasproyecto: null,
+    tareasproyecto: [],
     errorFormulario: false,
     tareaSeleccionada: null
   };
@@ -44,25 +26,30 @@ export const TareaState = (props) => {
   // crear dispatch y state
   const [state, dispatch] = useReducer(TareaReducer, initialState);
 
-  const selectTareas = (proyectoId) => {
-    dispatch({
-      type: TAREA_PROYECTO,
-      payload: proyectoId,
-    });
+  const obtenerTareas = async (proyecto) => {
+    try {
+      const respuesta = await clienteAxios.get('/api/tareas',{params: {proyecto}})
+      dispatch({
+        type: TAREA_PROYECTO,
+        payload: respuesta.data.tareas,
+      });
+    } catch (error) {
+      console.log(error)
+    }
+
   };
 
-  const obtenerTareas = () => {
-    dispatch({
-      type: OBTENER_TAREA,
-      payload: tareasProyecto,
-    });
-  };
-
-  const agregarTarea = (tarea) => {
-    dispatch({
-      type: AGREGAR_TAREA,
-      payload: tarea,
-    });
+  const agregarTarea = async(tarea) => {
+    try {
+      const resultado = await clienteAxios.post('/api/tareas', tarea)
+      console.log(resultado)
+      dispatch({
+        type: AGREGAR_TAREA,
+        payload: tarea,
+      });
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const mostrarError = () => {
@@ -70,18 +57,30 @@ export const TareaState = (props) => {
       type: VALIDAR_TASK,
     });
   };
-  const eliminarTarea = (id) => {
-    dispatch({
-      type: ELIMINAR_TAREA,
-      payload: id,
-    });
+  const eliminarTarea = async (id, proyecto) => {
+    try {
+      await clienteAxios.delete(`/api/tareas/${id}`,{params:{proyecto}})
+      dispatch({
+        type: ELIMINAR_TAREA,
+        payload: id,
+      });
+    } catch (error) {
+      console.log(error)
+    }
   };
-// cambia el estado de cada tarea
-const cambiarEstadoTarea = (id) => {
-  dispatch({
-    type: ESTADO_TAREA,
-    payload: id
-  })
+
+// edita o modifica una tarea
+const actualizarTarea = async (tarea) => {
+  try {
+    const resultado = await clienteAxios.put(`/api/tareas/${tarea._id}`, tarea)
+    console.log(resultado)
+    dispatch({
+      type: ACTUALIZA_TAREA,
+      payload: resultado.data.tarea
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
 // Extrae una tarea para edición
 const guardarTareaActual = tarea => {
@@ -90,29 +89,32 @@ const guardarTareaActual = tarea => {
     payload: tarea
   })
 }
-
-// edita o modifica una tarea
-const actualizarTarea = (tarea) => {
+const limpiarTarea = () => {
   dispatch({
-    type: ACTUALIZA_TAREA,
-    payload: tarea
+      type: LIMPIAR_TAREA
   })
 }
+const limpiarState = () => {
+  dispatch({
+      type: LIMPIAR_STATE
+  })
+}
+
+
   return (
     <TareaContext.Provider
       value={{
-        tareas: state.tareas,
         tareasproyecto: state.tareasproyecto,
         errorFormulario: state.errorFormulario,
         tareaSeleccionada: state.tareaSeleccionada,
         agregarTarea,
         obtenerTareas,
-        selectTareas,
         mostrarError,
         eliminarTarea,
-        cambiarEstadoTarea,
         guardarTareaActual,
-        actualizarTarea
+        limpiarTarea,
+        actualizarTarea,
+        limpiarState
       }}
     >
       {props.children}
